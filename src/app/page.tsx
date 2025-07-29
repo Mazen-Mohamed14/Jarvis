@@ -1,27 +1,38 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
 
 export default function Home() {
+  const [searchQuery, setSearchQuery] = useState<string>();
+
+  function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    setSearchQuery(e?.target.value);
+  }
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+    <div className="font-sans grid grid-cols-4 md:grid-cols-6 xl:grid-cols-12 gap-4 md:gap-6 xl:gap-8 items-center justify-items-center min-h-screen py-12 px-6 xl:p-30">
+      <main className="grid grid-cols-subgrid xl:gap-y-12 col-span-full items-center justify-items-center">
+        <h1 className="row-start-1 col-span-full xl:text-7xl self-center">Jarvis</h1>
         {/* <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
+          className="col-span-full"
+          src={"/jarvis.png"}
+          alt="jarvis logo"
+          width={110}
+          height={110}
           priority
+        /> */}
+        <textarea
+          name="search"
+          placeholder="search ..."
+          value={searchQuery}
+          onChange={handleChange}
+          className="row-start-3 xl:col-span-6 xl:col-start-4 w-full p-3 border-2 focus:outline-0 border-gray-500 rounded-xl h-24"
         />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">Save and see your changes instantly.</li>
-        </ol> */}
+        <button
+          type="submit"
+          className="row-start-4 outline-2 outline-black rounded-2xl py-2 row-span-1 xl:col-start-9 w-full hover:cursor-pointer self-center justify-self-center"
+        >
+          Search
+        </button>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center"></footer>
     </div>
