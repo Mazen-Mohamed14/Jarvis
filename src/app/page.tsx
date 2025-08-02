@@ -1,9 +1,26 @@
 "use client";
 
 import { useState } from "react";
+import { GoogleGenAI } from "@google/genai";
 
 export default function Home() {
-  const [searchQuery, setSearchQuery] = useState<string>();
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const ai = new GoogleGenAI({ apiKey: "AIzaSyBgvUvuAoOt5NcPmffnjLNcK8IfH7V4Ysk" });
+
+  async function main(query: string) {
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: query,
+      config: {
+        thinkingConfig: {
+          thinkingBudget: 0, // Disables thinking
+        },
+      },
+    });
+    console.log(response.text);
+  }
+  main(searchQuery);
 
   function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setSearchQuery(e?.target.value);
@@ -29,7 +46,7 @@ export default function Home() {
         />
         <button
           type="submit"
-          className="row-start-4 outline-2 outline-black rounded-2xl py-2 row-span-1 xl:col-start-9 w-full hover:cursor-pointer self-center justify-self-center"
+          className="row-start-4 outline-2 outline-black hover:bg-black hover:text-white duration-300 ease-in-out transition-colors rounded-2xl py-2 row-span-1 xl:col-start-9 w-full cursor-pointer self-center justify-self-center"
         >
           Search
         </button>
