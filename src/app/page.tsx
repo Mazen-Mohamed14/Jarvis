@@ -5,10 +5,11 @@ import { GoogleGenAI } from "@google/genai";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [answer, setAnswer] = useState<string>("");
 
   const ai = new GoogleGenAI({ apiKey: "AIzaSyBgvUvuAoOt5NcPmffnjLNcK8IfH7V4Ysk" });
 
-  async function main(query: string) {
+  async function handleSubmit(query: string) {
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: query,
@@ -19,12 +20,13 @@ export default function Home() {
       },
     });
     console.log(response.text);
+    setAnswer(response.text!);
   }
-  main(searchQuery);
 
   function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setSearchQuery(e?.target.value);
   }
+
   return (
     <div className="font-sans grid grid-cols-4 md:grid-cols-6 xl:grid-cols-12 gap-4 md:gap-6 xl:gap-8 items-center justify-items-center min-h-screen py-12 px-6 xl:p-30">
       <main className="grid grid-cols-subgrid xl:gap-y-12 col-span-full items-center justify-items-center">
@@ -46,10 +48,12 @@ export default function Home() {
         />
         <button
           type="submit"
+          onClick={() => handleSubmit(searchQuery)}
           className="row-start-4 outline-2 outline-black hover:bg-black hover:text-white duration-300 ease-in-out transition-colors rounded-2xl py-2 row-span-1 xl:col-start-9 w-full cursor-pointer self-center justify-self-center"
         >
           Search
         </button>
+        <p className="col-span-full row-start-5 text-blue-900">{answer}</p>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center"></footer>
     </div>
